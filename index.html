@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Key Skills Countdown</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1d2a5b; --gold:#f2b632; --gold-soft:#fff4d6; --bg:#f6f3ff; --card:#ffffff;
+  --ink:#1f2433; --muted:#5b6275; --green:#1f9d55; --green-soft:#e3f7ea; --red:#d64545; --red-soft:#fde8e8;
+  --c1:#e8505b; --c2:#f28c28; --c3:#f2b632; --c4:#2fb380; --c5:#2f8fe0; --c6:#8b5cf6;
+  --line:#e3e0ef;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Nunito',system-ui,sans-serif;font-size:18px;line-height:1.55}
+h1,h2,h3,.fred{font-family:'Fredoka',system-ui,sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:16px}
+header{text-align:center;padding:18px 16px 8px}
+#logo{max-width:260px;width:60%;height:auto;display:block;margin:0 auto 6px}
+header h1{margin:4px 0 0;font-size:clamp(28px,5vw,42px);color:var(--navy);letter-spacing:.5px}
+header h1 span{background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3),var(--c4),var(--c5),var(--c6));-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{margin:4px 0 0;color:var(--muted)}
+.namebox{background:var(--card);border-radius:18px;padding:14px 16px;margin:14px 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap;box-shadow:0 2px 0 var(--line)}
+.namebox label{font-weight:700}
+.namebox input{flex:1;min-width:180px;font-size:18px;padding:10px 12px;border:2px solid var(--line);border-radius:12px;font-family:inherit}
+.directions{background:var(--gold-soft);border:2px dashed var(--gold);border-radius:18px;padding:12px 16px;margin:10px 0 18px}
+.directions ul{margin:6px 0 0;padding-left:4px;list-style:none}
+.directions li{margin:4px 0}
+.days{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.daycard{border:none;text-align:left;cursor:pointer;background:var(--card);border-radius:20px;padding:16px;box-shadow:0 4px 0 var(--line);font-family:inherit;color:inherit;border-top:10px solid var(--c);transition:transform .1s}
+.daycard:active{transform:translateY(2px)}
+.daycard .num{font-family:'Fredoka',system-ui,sans-serif;font-weight:700;font-size:22px;color:var(--c)}
+.daycard .ttl{font-family:'Fredoka',system-ui,sans-serif;font-weight:600;font-size:20px;margin:2px 0 6px;color:var(--navy)}
+.daycard .sk{font-size:15px;color:var(--muted)}
+.daycard .st{margin-top:10px;font-weight:700;font-size:15px}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:13px;font-weight:700;margin:2px 4px 2px 0}
+.p-prose{background:#ffe6e8;color:#a3212c}
+.p-vocab{background:#e2efff;color:#1a5fa8}
+.hidden{display:none!important}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:6px 0 12px}
+.btn{font-family:'Fredoka',system-ui,sans-serif;font-weight:600;font-size:17px;border:none;border-radius:14px;padding:10px 16px;cursor:pointer;background:var(--navy);color:#fff}
+.btn.light{background:#fff;color:var(--navy);box-shadow:0 2px 0 var(--line)}
+.btn.gold{background:var(--gold);color:var(--navy)}
+.keys{display:flex;gap:4px;font-size:24px}
+.keys span{filter:grayscale(1) opacity(.35)}
+.keys span.on{filter:none}
+.box{background:var(--card);border-radius:20px;padding:18px;margin:0 0 16px;box-shadow:0 3px 0 var(--line)}
+.review{border-left:10px solid var(--gold)}
+.review h2{margin:0 0 8px;color:var(--navy);font-size:24px}
+.review .tip{margin:10px 0;padding:10px 12px;border-radius:14px}
+.review .tip.prose{background:#fff1f2}
+.review .tip.vocab{background:#eef5ff}
+.review .tip b{font-family:'Fredoka',system-ui,sans-serif;font-weight:600}
+.review ul{margin:6px 0 0 0;padding-left:22px}
+.passage h2{margin:0;color:var(--navy);font-size:24px}
+.passage .ptitle{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.passage .text p{margin:0 0 12px}
+.passage h3{margin:16px 0 6px;color:var(--navy)}
+.poem{white-space:pre-line;font-size:19px;background:#fbfaff;border-radius:14px;padding:12px 16px;border:2px solid var(--line);margin:0 0 12px}
+.note{font-size:15px;color:var(--muted);font-style:italic}
+.speak{border:none;background:#eef0ff;border-radius:12px;padding:8px 12px;font-size:16px;cursor:pointer;font-family:'Fredoka',system-ui,sans-serif;color:var(--navy)}
+.q{background:var(--card);border-radius:20px;padding:18px;margin:0 0 16px;box-shadow:0 3px 0 var(--line)}
+.qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.qnum{font-family:'Fredoka',system-ui,sans-serif;font-weight:700;color:var(--navy);font-size:20px}
+.qtext{font-weight:700;margin:6px 0 12px}
+.opt{display:block;width:100%;text-align:left;font-family:inherit;font-size:18px;padding:12px 14px;margin:8px 0;border-radius:14px;border:3px solid var(--line);background:#fff;cursor:pointer;color:var(--ink)}
+.opt b{font-family:'Fredoka',system-ui,sans-serif;margin-right:6px;color:var(--navy)}
+.opt:disabled{cursor:default}
+.opt.correct{border-color:var(--green);background:var(--green-soft)}
+.opt.wrong{border-color:var(--red);background:var(--red-soft)}
+.fb{margin-top:10px;padding:12px 14px;border-radius:14px;font-size:17px}
+.fb.good{background:var(--green-soft);border:2px solid var(--green)}
+.fb.bad{background:var(--red-soft);border:2px solid var(--red)}
+.done{text-align:center;background:linear-gradient(135deg,#fff7df,#f0e9ff);border:3px solid var(--gold)}
+.done .big{font-family:'Fredoka',system-ui,sans-serif;font-size:40px;font-weight:700;color:var(--navy)}
+footer{text-align:center;color:var(--muted);font-size:14px;padding:20px 0 40px}
+.tbtn{background:none;border:none;color:var(--muted);text-decoration:underline;cursor:pointer;font-size:14px;font-family:inherit}
+.key table{width:100%;border-collapse:collapse;font-size:16px}
+.key td,.key th{border-bottom:1px solid var(--line);padding:6px;text-align:left;vertical-align:top}
+canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+@media (max-width:520px){body{font-size:17px}.box,.q{padding:14px}}
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+<header>
+  <img id="logo" src="logo.png" alt="The Literacy Locksmith" onerror="this.style.display='none'">
+  <h1><span>Key Skills Countdown</span></h1>
+  <p>6 Days of Mini Reviews Before the FAST 🔑</p>
+</header>
+
+<div class="wrap">
+  <!-- HOME -->
+  <section id="home">
+    <div class="namebox">
+      <label for="name">✏️ First name &amp; last initial:</label>
+      <input id="name" autocomplete="off" placeholder="Example: Maya R.">
+    </div>
+    <div class="directions">
+      <b>📱 How to do it:</b>
+      <ul>
+        <li>1️⃣ Tap <b>today's day</b> below.</li>
+        <li>2️⃣ Read the 🔑 <b>Quick Review</b> first. It's your cheat code!</li>
+        <li>3️⃣ Read the passage. Tap 🔊 if you want it read to you.</li>
+        <li>4️⃣ Tap your answer. You get <b>ONE try</b>, so look back at the text first! 👀</li>
+        <li>5️⃣ Your work saves on your iPad automatically. 💾</li>
+        <li>6️⃣ When you finish, take a screenshot 📸 and turn it in on Canvas.</li>
+      </ul>
+    </div>
+    <div class="days" id="days"></div>
+  </section>
+
+  <!-- DAY VIEW -->
+  <section id="dayview" class="hidden">
+    <div class="topbar">
+      <button class="btn light" onclick="goHome()">⬅️ All Days</button>
+      <div class="keys" id="keys"></div>
+    </div>
+    <div id="daycontent"></div>
+  </section>
+
+  <!-- TEACHER KEY -->
+  <section id="teacher" class="hidden">
+    <div class="box key">
+      <div class="topbar"><h2 style="margin:0;color:var(--navy)">🧑‍🏫 Teacher Answer Key</h2><button class="btn light" onclick="goHome()">Close</button></div>
+      <div id="keytable"></div>
+      <p style="margin-top:16px"><button class="btn gold" onclick="resetAll()">🔄 Reset this iPad (clears all saved answers)</button></p>
+    </div>
+  </section>
+
+  <footer>
+    Grade 6 ELA · Florida B.E.S.T. Standards<br>
+    <button class="tbtn" onclick="openTeacher()">Teacher</button>
+  </footer>
+</div>
+
+<script>
+/* ================= CONTENT ================= */
+const DAYS = [
+{
+  title:"Characters Move the Plot", color:"var(--c1)",
+  skills:[["prose","ELA.6.R.1.1 Character Interaction & Plot"],["vocab","ELA.6.V.1.3 Context Clues"]],
+  review:[
+    ["prose","🎭 Characters &amp; Plot","When two characters argue, help, or surprise each other, ask: <i>“What happens next BECAUSE of this?”</i> That is how characters push the plot forward.",
+      ["Find the moment a character <b>reacts</b> to another character.","Ask how that reaction <b>changes</b> what happens next."]],
+    ["vocab","🔍 Context Clues","Stuck on a word? Don't skip it! The sentences around it hold clues.",
+      ["<b>Synonym or definition</b> clue: the text says it another way.","<b>Example</b> clue: the text shows what it looks like.","<b>Antonym</b> clue: words like <i>but</i> or <i>instead</i> show the opposite."]]
+  ],
+  passageTitle:"The Science Fair Switch",
+  passage:`<p>Maya had spent three weeks building her volcano. It was the best one she had ever made. On the morning of the science fair, her little brother Theo bumped it off the kitchen table. The cone cracked into four pieces.</p>
+<p>“You ruined it!” Maya shouted.</p>
+<p>Theo's eyes filled with tears. “I was only trying to see the inside,” he whispered.</p>
+<p>Maya wanted to stay angry, but she noticed how <b>dejected</b> Theo looked. His shoulders drooped, and he stared at the floor as if he had lost his best friend. She took a deep breath.</p>
+<p>“Okay,” she said. “If you want to see the inside, help me fix it. We can show the layers of a real volcano.”</p>
+<p>Together, they glued the pieces so the inside showed. Theo painted the magma bright orange. At the fair, the judges were <b>intrigued</b> by the cutaway model. They asked Maya question after question, curious about every layer. Maya won second place, and she let Theo hold the ribbon all the way home.</p>`,
+  qs:[
+    {t:"prose",q:"How does Theo's accident affect the plot?",o:["It makes Maya decide to skip the science fair.","It leads Maya to turn her project into a model that shows the inside of a volcano.","It causes the judges to give Maya last place.","It makes Theo build his own volcano."],a:1,
+     e:"Because the volcano cracked, Maya and Theo glued it so the inside showed. That new cutaway model is what impressed the judges."},
+    {t:"prose",q:"Which moment shows the turning point between Maya and Theo?",o:["Maya spends three weeks building her volcano.","Theo paints the magma bright orange.","Maya takes a deep breath and asks Theo to help her fix it.","The judges ask Maya question after question."],a:2,
+     e:"Maya stops being angry and invites Theo to help. Their relationship (and the story) changes direction right there."},
+    {t:"vocab",q:"What does the word <b>dejected</b> mean in the passage?",o:["excited","very sad and discouraged","angry","confused"],a:1,
+     e:"Example clues: “his shoulders drooped” and “he stared at the floor as if he had lost his best friend.” Those show sadness."},
+    {t:"vocab",q:"Which phrase from the passage is the BEST clue to the meaning of <b>intrigued</b>?",o:["“glued the pieces”","“bright orange”","“curious about every layer”","“all the way home”"],a:2,
+     e:"“Curious about every layer” is a synonym clue. Intrigued means very interested and curious."},
+    {t:"prose",q:"Why does Maya let Theo hold the ribbon at the end?",o:["She shows she has forgiven him and sees him as her partner.","She does not like the color of the ribbon.","Theo asks her for it many times.","The judges tell her to give it to him."],a:0,
+     e:"Theo helped build the winning model. Letting him hold the ribbon shows how working together changed their relationship."},
+    {t:"vocab",q:"Which word is the OPPOSITE (antonym) of <b>dejected</b>?",o:["gloomy","tired","cheerful","lonely"],a:2,
+     e:"Dejected means sad and discouraged. Cheerful means happy, so it is the opposite."}
+  ]
+},
+{
+  title:"Theme & Figurative Language", color:"var(--c2)",
+  skills:[["prose","ELA.6.R.1.2 Theme"],["vocab","ELA.6.R.3.1 Figurative Language & Tone"]],
+  review:[
+    ["prose","💡 Theme","Theme is the <b>life lesson</b> of a story. It's a full sentence, not one word.",
+      ["❌ “Courage” (that's a topic)","✅ “Courage means doing something even when you are afraid.”","Watch how the main character <b>changes</b>. That change points to the theme."]],
+    ["vocab","🎨 Figurative Language &amp; Tone","Figurative language means more than the words say. Ask: <i>“What feeling does this create?”</i> (That feeling is the <b>tone</b>.)",
+      ["<b>Simile:</b> compares using <i>like</i> or <i>as</i>","<b>Metaphor:</b> says one thing IS another","<b>Personification:</b> gives human actions to a non-human thing","<b>Hyperbole:</b> a huge exaggeration"]]
+  ],
+  passageTitle:"The Last Lap",
+  passage:`<p>Jordan hated running. Every gym class, the track stretched in front of him like an endless gray snake. Today was the mile test, and his stomach was a knot of rope.</p>
+<p>By the third lap, his legs were made of cement. Kids zipped past him. <i>Just quit,</i> he told himself. <i>Walk the rest.</i></p>
+<p>Then he heard Coach Rivera. “Don't race them, Jordan. Race the guy you were yesterday.”</p>
+<p>Jordan thought about last month, when he had walked half the mile. He kept jogging. His lungs burned, and the finish line seemed a thousand miles away. But he did not stop.</p>
+<p>When he crossed the line, his time was slower than almost everyone else's. Still, it was two minutes faster than his last try. Jordan grinned so wide his cheeks hurt. For the first time, the track looked less like a snake and more like a road.</p>`,
+  qs:[
+    {t:"prose",q:"Which sentence BEST states a theme of the passage?",o:["Winning the race is the only thing that matters.","Comparing yourself to your own past can help you keep going.","Coaches should make gym class easier.","Running is the hardest sport."],a:1,
+     e:"Jordan is still slower than most kids, but he is proud because he beat his <b>own</b> old time. That's the life lesson."},
+    {t:"prose",q:"Which detail helps develop that theme the MOST?",o:["“Kids zipped past him.”","“Today was the mile test.”","“Don't race them, Jordan. Race the guy you were yesterday.”","“His lungs burned.”"],a:2,
+     e:"Coach Rivera's words state the big idea: race against yourself, not everyone else."},
+    {t:"vocab",q:"“His legs were made of cement.” What does this metaphor show?",o:["Jordan's legs felt heavy and tired.","Jordan hurt his legs on the sidewalk.","Jordan's legs were very strong.","Jordan was standing still on purpose."],a:0,
+     e:"Cement is heavy and hard to move. The metaphor shows how tired and heavy his legs felt."},
+    {t:"vocab",q:"“The finish line seemed a thousand miles away” is an example of —",o:["simile","personification","hyperbole","onomatopoeia"],a:2,
+     e:"The finish line was not really a thousand miles away. It's a huge exaggeration, which is hyperbole."},
+    {t:"vocab",q:"At the beginning, the track is “like an endless gray snake.” What tone does this simile create?",o:["calm and peaceful","silly and funny","dread and worry","proud and excited"],a:2,
+     e:"Snakes can seem scary, and “endless” and “gray” feel gloomy. Jordan dreads running."},
+    {t:"prose",q:"At the end, the track looks “more like a road.” What does this change show?",o:["The school paved the track.","Jordan now sees running as a path forward instead of something scary.","Jordan wants to quit running for good.","Jordan is lost and cannot find the finish."],a:1,
+     e:"The snake (scary) becomes a road (a way forward). Jordan's feelings changed, and that change supports the theme."}
+  ]
+},
+{
+  title:"Point of View & Word Roots", color:"var(--c3)",
+  skills:[["prose","ELA.6.R.1.3 Narrators & Point of View"],["vocab","ELA.6.V.1.2 Greek & Latin Roots"]],
+  review:[
+    ["prose","👀 Narrators &amp; Point of View","A <b>first-person</b> narrator (I, me, my) only knows their OWN thoughts. When a story switches narrators, you see the same events two ways.",
+      ["Ask: <i>What does this narrator know that the other one doesn't?</i>","Switching narrators can build <b>suspense</b>: you know something a character doesn't!"]],
+    ["vocab","🧩 Greek &amp; Latin Roots","Break a big word into parts.",
+      ["<b>aud</b> = hear · <b>vis/vid</b> = see · <b>tele</b> = far · <b>phon</b> = sound","<b>bio</b> = life · <b>-ology</b> = study of · <b>port</b> = carry","<b>-ible / -able</b> = can be / able to be"]]
+  ],
+  passageTitle:"The Lost Dog Poster",
+  passage:`<h3>Part 1: Ana</h3>
+<p>I saw the poster on the telephone pole: LOST DOG — BROWN, ONE WHITE EAR. My heart pounded. That morning I had seen a brown dog with one white ear near the creek behind my house. I grabbed my bike and pedaled as hard as I could.</p>
+<p>At the creek, I heard a faint bark, barely <b>audible</b> over the wind. There he was, muddy and shivering under a bush. I was sure I was about to be a hero.</p>
+<h3>Part 2: Mr. Okafor</h3>
+<p>I had taped up forty posters in two days, all in the most <b>visible</b> spots on the street. My neighbors were kind, but nobody had called. I sat on my porch holding Biscuit's empty leash, wondering if I would ever see him again.</p>
+<p>Then a girl on a bike skidded into my driveway, out of breath. Behind her, trotting proudly, came a muddy brown dog with one white ear.</p>`,
+  qs:[
+    {t:"prose",q:"Why does the author include Part 2, told by Mr. Okafor?",o:["To explain how to make a lost dog poster","To show how worried and hopeless the owner felt, which Ana did not know","To prove that Ana is not telling the truth","To describe what the creek looks like"],a:1,
+     e:"Ana only knows her own excitement. Mr. Okafor's section shows the reader how sad and worried he was."},
+    {t:"prose",q:"What does the READER know during Part 2 that Mr. Okafor does NOT know yet?",o:["That Biscuit is brown","That he put up forty posters","That Ana has already found Biscuit and is on her way","That his neighbors are kind"],a:2,
+     e:"We read Part 1 first, so we know Ana found the dog. Mr. Okafor doesn't know until she arrives."},
+    {t:"prose",q:"How does switching narrators affect the story?",o:["It builds suspense because the reader knows help is coming before Mr. Okafor does.","It makes the story confusing with no purpose.","It shows that Ana and Mr. Okafor are the same person.","It tells the story in the wrong order."],a:0,
+     e:"Knowing something a character doesn't makes us eager to see his reaction. That's suspense!"},
+    {t:"vocab",q:"The root <b>aud</b> means “hear.” What does <b>audible</b> mean?",o:["easy to see","able to be heard","very loud and scary","far away"],a:1,
+     e:"aud (hear) + -ible (able to be) = able to be heard. The bark was barely loud enough to hear."},
+    {t:"vocab",q:"The root <b>vis</b> means “see.” The posters were in the most <b>visible</b> spots. This means the spots were —",o:["easy to see","hidden","very quiet","far from the street"],a:0,
+     e:"vis (see) + -ible (able to be) = able to be seen. He put posters where people would notice them."},
+    {t:"vocab",q:"In the word <b>telephone</b>, <i>phone</i> means “sound.” What does <b>tele</b> most likely mean?",o:["small","far","loud","write"],a:1,
+     e:"A telephone carries sound from far away. Tele = far, like in telescope and television."}
+  ]
+},
+{
+  title:"Poetic Forms", color:"var(--c4)",
+  skills:[["prose","ELA.6.R.1.4 Poetic Forms"],["vocab","ELA.6.R.3.1 / V.1.3 Figurative Language & Connotation"]],
+  review:[
+    ["prose","📜 Poetic Forms","A poem's <b>form</b> (its shape and rules) changes how it feels.",
+      ["<b>Haiku:</b> 3 lines, 5-7-5 syllables, one quick moment in nature","<b>Limerick:</b> 5 lines, rhymes AABBA, bouncy and funny","<b>Free verse:</b> no set rhyme or rhythm; sounds like natural talking","Short lines and line breaks make you <b>slow down</b> on important words."]],
+    ["vocab","❤️ Connotation","<b>Denotation</b> = dictionary meaning. <b>Connotation</b> = the feeling a word gives.",
+      ["“Home” and “house” mean almost the same thing, but “home” feels warm and safe. 🏡"]]
+  ],
+  passageTitle:"Three Short Poems",
+  passage:`<h3>Poem A: Autumn</h3>
+<div class="poem">Autumn wind whispers
+red leaves dance across the yard —
+summer says goodbye</div>
+<h3>Poem B: The Cheese Cat</h3>
+<div class="poem">A cat with a fondness for cheese
+Would sneak to the fridge with great ease.
+She'd nibble and munch
+On cheddar for lunch,
+Then nap with a smile in the breeze.</div>
+<h3>Poem C: Grandpa's Hands</h3>
+<div class="poem">Grandpa's hands are maps,
+lined with roads
+he traveled long before me.
+They are rough as tree bark,
+but when he holds mine
+they are gentle,
+steady,
+home.</div>`,
+  qs:[
+    {t:"prose",q:"What form is Poem A?",o:["Limerick, because it is funny","Haiku, because it has 3 lines with 5-7-5 syllables about a moment in nature","Free verse, because it has no rules","Ballad, because it tells a long story"],a:1,
+     e:"Count it: Au-tumn-wind-whis-pers (5), red-leaves-dance-a-cross-the-yard (7), sum-mer-says-good-bye (5). That's a haiku!"},
+    {t:"prose",q:"How does the limerick form of Poem B affect its meaning?",o:["The bouncy rhythm and AABBA rhyme make it playful and funny.","The short form makes it sad and serious.","The lack of rhyme makes it sound like a news report.","The 14 lines make it feel like a love poem."],a:0,
+     e:"Limericks are built to be silly. The bouncy beat and rhymes (cheese/ease/breeze, munch/lunch) match the goofy cat."},
+    {t:"prose",q:"Why might the poet choose free verse for Poem C?",o:["To make readers laugh","To follow a strict 5-7-5 pattern","So the poem sounds like personal, natural thoughts, with short lines that slow the reader down on important words","So every line rhymes"],a:2,
+     e:"Free verse sounds like real talking. The very short lines at the end (gentle, steady, home) make you pause on each feeling."},
+    {t:"vocab",q:"“Grandpa's hands are maps, lined with roads.” What does this metaphor suggest?",o:["Grandpa likes to read maps.","The lines on his hands show a long life full of experiences.","Grandpa's hands are dirty.","Grandpa gets lost a lot."],a:1,
+     e:"The wrinkles are like roads on a map. They show everywhere he has been and everything he has lived through."},
+    {t:"vocab",q:"In Poem A, “summer says goodbye” is an example of —",o:["personification","simile","hyperbole","rhyme"],a:0,
+     e:"Summer can't really talk. Giving it a human action (saying goodbye) is personification."},
+    {t:"vocab",q:"Poem C ends with the word <b>home</b>. What is the connotation of “home” here?",o:["a building made of wood","safe, loved, and comfortable","lonely and empty","busy and noisy"],a:1,
+     e:"The poet could have said “house,” but “home” carries a warm, safe, loving feeling."}
+  ]
+},
+{
+  title:"Paraphrase & Rhetorical Appeals", color:"var(--c5)",
+  skills:[["vocab","ELA.6.R.3.2 Paraphrase"],["vocab","ELA.6.R.3.4 Rhetorical Appeals"],["vocab","ELA.6.V.1.2 Roots"]],
+  review:[
+    ["vocab","🔁 Paraphrase","To paraphrase, say it in <b>your own words</b> with the <b>same meaning</b>.",
+      ["✅ Keep the main idea.","❌ Don't add your opinion or new facts.","❌ Don't leave out the most important part."]],
+    ["vocab","📣 Rhetorical Appeals","Authors use appeals to convince you.",
+      ["<b>Ethos</b> = trust 🧑‍🔬 (an expert or someone with experience)","<b>Pathos</b> = emotions 😢😊 (makes you FEEL something)","<b>Logos</b> = logic 🔢 (facts, numbers, reasons)"]]
+  ],
+  passageTitle:"Grow Something Great",
+  passage:`<p class="note">An opinion article written by a sixth-grade student for the school newsletter</p>
+<p>Our school should turn the empty lot behind the cafeteria into a student garden. Right now, that space is nothing but weeds and broken bricks.</p>
+<p>First, a garden would help us learn. Ms. Patel, our science teacher who has taught <b>biology</b> for fifteen years, says, “Students remember science best when they can touch it and watch it grow.”</p>
+<p>Second, a garden would save money. Last year, our school spent $600 on flowers for the front entrance. Seeds for a whole garden cost less than $100, and students could grow the flowers themselves.</p>
+<p>Finally, imagine walking outside on a hard day and seeing tomatoes you planted turning red. Picture the pride on a younger student's face when she pulls up her very first carrot. A garden would give every student a place to feel calm and proud.</p>
+<p>Let's stop letting good ground go to waste. Let's grow something great.</p>`,
+  qs:[
+    {t:"vocab",q:"Which sentence is an example of <b>ethos</b> (trust)?",o:["“Right now, that space is nothing but weeds and broken bricks.”","Ms. Patel, a science teacher with fifteen years of experience, says students remember science best when they can touch it.","“Seeds for a whole garden cost less than $100.”","“Let's grow something great.”"],a:1,
+     e:"Ms. Patel is an expert. Using her experience makes us trust the argument. That's ethos."},
+    {t:"vocab",q:"Which sentence is an example of <b>logos</b> (logic)?",o:["“Last year, our school spent $600 on flowers… Seeds for a whole garden cost less than $100.”","“Imagine walking outside on a hard day.”","“Picture the pride on a younger student's face.”","“Let's stop letting good ground go to waste.”"],a:0,
+     e:"Comparing $600 to less than $100 uses numbers and facts. That's logos."},
+    {t:"vocab",q:"The fourth paragraph (“imagine walking outside on a hard day…”) mainly uses —",o:["ethos","logos","pathos","no appeal at all"],a:2,
+     e:"Words like pride, calm, and “hard day” make you FEEL something. That's pathos."},
+    {t:"vocab",q:"Which is the BEST paraphrase of Ms. Patel's quote: “Students remember science best when they can touch it and watch it grow”?",o:["Students should touch everything in the classroom.","Science is the most important subject in school.","Kids learn science better through hands-on experiences they can see change over time.","Gardens are better than classrooms, and every school needs one."],a:2,
+     e:"This keeps the same meaning in new words. The other choices change the meaning or add new opinions."},
+    {t:"vocab",q:"Which is the BEST paraphrase of the third paragraph?",o:["The school could save money by growing its own flowers from cheap seeds instead of buying plants.","The school wastes money, and the principal should be in trouble.","Flowers are pretty, so the school should buy more of them.","Seeds are hard to grow, so they cost a lot."],a:0,
+     e:"It keeps the main idea (save money with seeds vs. buying flowers) without adding opinions."},
+    {t:"vocab",q:"<b>Bio</b> means “life” and <b>-ology</b> means “study of.” What is <b>biology</b>?",o:["the study of rocks","the study of living things","a book about someone's life","the study of the weather"],a:1,
+     e:"bio (life) + -ology (study of) = the study of living things, like plants in a garden!"}
+  ]
+},
+{
+  title:"Then vs. Now & Mixed Review", color:"var(--c6)",
+  skills:[["vocab","ELA.6.R.3.3 Compare Authors Across Time"],["prose","ELA.6.R.1.2 Theme"],["vocab","ELA.6.R.3.1 Figurative Language"]],
+  review:[
+    ["vocab","⏳ Comparing Texts From Different Times","When two authors from different time periods write about the same topic, compare:",
+      ["📌 <b>Topic:</b> What are both texts about?","🤝 <b>Same:</b> What do both authors think or feel?","↔️ <b>Different:</b> How was life different then? How is the word choice different (formal vs. casual)?"]],
+    ["prose","💡 Theme Check","A theme can show up in more than one text. Look for the lesson BOTH authors would agree on.",[]]
+  ],
+  passageTitle:"School: Then and Now",
+  passage:`<h3>Text 1: A Letter Home</h3>
+<p class="note">A fictional letter written in the style of the 1880s, when many students learned in one-room schoolhouses</p>
+<p>Dear Mother,</p>
+<p>The schoolhouse is but a single room, and I am to share it with twenty-two scholars of every age. We must carry our own water from the well and keep the stove burning through the winter. I confess I miss you dearly. Yet I believe learning is the finest gift a young person may receive. I shall study by lamplight each evening, for there is no greater treasure than <b>a mind well furnished</b>.</p>
+<p>Your loving daughter,<br>Clara</p>
+<h3>Text 2: My School Day</h3>
+<p class="note">A blog post written by a sixth grader today</p>
+<p>My school day starts when I open my iPad. I check my assignments, watch a video lesson, and send questions to my teacher in seconds. Some days I feel overwhelmed by all the screens and notifications. But when I finally understand a hard math problem, it feels amazing. School is way different than it used to be, but learning still feels like unlocking a door.</p>
+<p>— Devon, 6th grade</p>`,
+  qs:[
+    {t:"vocab",q:"What topic do BOTH texts address?",o:["Taking care of pets","Going to school and learning","Carrying water from a well","Using an iPad"],a:1,
+     e:"Clara writes about her one-room school, and Devon writes about his school day. Both are about school and learning."},
+    {t:"vocab",q:"How are the two authors' ideas ALIKE?",o:["Both think school is a waste of time.","Both believe learning is valuable and rewarding.","Both use technology every day.","Both live far from their families."],a:1,
+     e:"Clara calls learning “the finest gift.” Devon says understanding a hard problem “feels amazing.”"},
+    {t:"vocab",q:"How are the challenges in the two texts DIFFERENT?",o:["Clara faces hard physical work like carrying water, while Devon feels overwhelmed by screens and notifications.","Clara has too many screens, while Devon has to keep a stove burning.","Neither author has any challenges.","Both authors complain about math."],a:0,
+     e:"The time periods are different! Clara's challenges are physical chores. Devon's are about technology."},
+    {t:"vocab",q:"How does the time period affect each author's word choice?",o:["Both authors use slang.","Clara uses formal, old-fashioned words like “I confess” and “scholars,” while Devon uses casual, everyday words.","Devon uses old-fashioned words, while Clara uses slang.","There is no difference in word choice."],a:1,
+     e:"People wrote more formally in the 1880s. Devon writes the way kids talk today."},
+    {t:"vocab",q:"Clara says there is “no greater treasure than <b>a mind well furnished</b>.” What does she mean?",o:["a bedroom with nice furniture","a mind full of knowledge","a person who is very rich","a house near the school"],a:1,
+     e:"A furnished room is filled with furniture. A “well furnished” mind is filled with knowledge. It's a metaphor!"},
+    {t:"prose",q:"Which theme fits BOTH texts?",o:["Technology makes learning easy.","Learning takes effort, but it is worth it.","Old schools were better than new schools.","Students should never feel overwhelmed."],a:1,
+     e:"Clara carries water and studies by lamplight. Devon pushes through a hard problem. Both work hard, and both say learning is worth it."}
+  ]
+}
+];
+
+/* Mix up answer positions (same order every time, so the teacher key always matches) */
+(function(){
+  let seed = 20261119;
+  const rnd = ()=>{ seed = (seed*1103515245+12345) % 2147483648; return seed/2147483648; };
+  DAYS.forEach(D=>D.qs.forEach(q=>{
+    const idx = q.o.map((_,k)=>k);
+    for(let k=idx.length-1;k>0;k--){ const r=Math.floor(rnd()*(k+1)); [idx[k],idx[r]]=[idx[r],idx[k]]; }
+    q.o = idx.map(k=>q.o[k]); q.a = idx.indexOf(q.a);
+  }));
+})();
+
+/* ================= STATE / AUTOSAVE ================= */
+const SKEY = "llKeySkillsCountdown_v1";
+let state = {name:"", ans:{}};   // ans["d0"] = [idx|null,...]
+function load(){ try{ const s = JSON.parse(localStorage.getItem(SKEY)); if(s && typeof s==="object"){ state = Object.assign({name:"",ans:{}}, s); } }catch(e){} }
+function save(){ try{ localStorage.setItem(SKEY, JSON.stringify(state)); }catch(e){} }
+load();
+
+const nameEl = document.getElementById("name");
+nameEl.value = state.name || "";
+nameEl.addEventListener("input", ()=>{ state.name = nameEl.value; save(); });
+
+function dayAns(d){ if(!state.ans["d"+d]) state.ans["d"+d] = DAYS[d].qs.map(()=>null); return state.ans["d"+d]; }
+function dayScore(d){ const a = state.ans["d"+d]||[]; let c=0,n=0; DAYS[d].qs.forEach((q,i)=>{ if(a[i]!=null){n++; if(a[i]===q.a)c++;} }); return {c,n,total:DAYS[d].qs.length}; }
+
+/* ================= RENDER HOME ================= */
+function pillFor(t){ return t==="prose" ? '<span class="pill p-prose">📖 Prose &amp; Poetry</span>' : '<span class="pill p-vocab">🔤 Across Genres &amp; Vocab</span>'; }
+function renderHome(){
+  const el = document.getElementById("days"); el.innerHTML="";
+  DAYS.forEach((D,d)=>{
+    const s = dayScore(d);
+    const status = s.n===0 ? "🔒 Not started" : s.n<s.total ? `✏️ In progress (${s.n}/${s.total})` : `🔑 Done! Score: ${s.c}/${s.total}`;
+    const types = [...new Set(D.skills.map(k=>k[0]))].map(pillFor).join("");
+    const b = document.createElement("button");
+    b.className="daycard"; b.style.setProperty("--c",D.color);
+    b.innerHTML = `<div class="num">Day ${d+1}</div><div class="ttl">${D.title}</div><div>${types}</div><div class="sk">${D.skills.map(k=>k[1]).join("<br>")}</div><div class="st">${status}</div>`;
+    b.onclick = ()=>openDay(d);
+    el.appendChild(b);
+  });
+}
+
+/* ================= RENDER DAY ================= */
+let cur = 0;
+function openDay(d){
+  cur = d; stopSpeak();
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("teacher").classList.add("hidden");
+  document.getElementById("dayview").classList.remove("hidden");
+  const D = DAYS[d], A = dayAns(d);
+  let h = `<div class="box review"><h2>🔑 Day ${d+1} Quick Review</h2>`;
+  D.review.forEach(r=>{
+    h += `<div class="tip ${r[0]}"><b>${r[1]}</b><div>${r[2]}</div>${r[3].length?'<ul>'+r[3].map(x=>'<li>'+x+'</li>').join('')+'</ul>':''}</div>`;
+  });
+  h += `</div>`;
+  h += `<div class="box passage"><div class="ptitle"><h2>📖 ${D.passageTitle}</h2><button class="speak" onclick="speakEl('ptext')">🔊 Read to me</button></div><div class="text" id="ptext">${D.passage}</div></div>`;
+  D.qs.forEach((q,i)=>{
+    h += `<div class="q" id="q${i}"><div class="qhead"><div><span class="qnum">Question ${i+1}</span> ${pillFor(q.t)}</div><button class="speak" onclick="speakQ(${i})">🔊</button></div>
+      <div class="qtext" id="qt${i}">${q.q}</div>
+      ${q.o.map((o,j)=>`<button class="opt" id="o${i}_${j}" onclick="answer(${i},${j})"><b>${"ABCD"[j]}</b> ${o}</button>`).join("")}
+      <div id="fb${i}"></div></div>`;
+  });
+  h += `<div id="donebox"></div>`;
+  document.getElementById("daycontent").innerHTML = h;
+  D.qs.forEach((q,i)=>{ if(A[i]!=null) showResult(i,A[i],false); });
+  updateKeys(); checkDone(false);
+  window.scrollTo(0,0);
+}
+function answer(i,j){
+  const A = dayAns(cur);
+  if(A[i]!=null) return;  // one try only
+  A[i]=j; save();
+  showResult(i,j,true); updateKeys(); checkDone(true);
+}
+function showResult(i,j,fresh){
+  const q = DAYS[cur].qs[i];
+  q.o.forEach((_,k)=>{ const b=document.getElementById(`o${i}_${k}`); b.disabled=true;
+    if(k===q.a) b.classList.add("correct"); else if(k===j) b.classList.add("wrong"); });
+  const ok = j===q.a;
+  document.getElementById("fb"+i).innerHTML = `<div class="fb ${ok?'good':'bad'}"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><div id="fbt${i}"><b>${ok?'✅ You got it!':'❌ Not quite. The answer is '+"ABCD"[q.a]+'.'}</b> ${q.e}</div><button class="speak" onclick="speakFb(${i})" aria-label="Read the explanation">🔊</button></div></div>`;
+  if(fresh && ok) miniBurst(document.getElementById(`o${i}_${j}`));
+}
+function updateKeys(){
+  const A = dayAns(cur), q = DAYS[cur].qs;
+  document.getElementById("keys").innerHTML = q.map((x,i)=>`<span class="${A[i]===x.a?'on':''}" title="Question ${i+1}">🔑</span>`).join("");
+}
+function checkDone(fresh){
+  const s = dayScore(cur), box = document.getElementById("donebox");
+  if(s.n<s.total){ box.innerHTML=""; return; }
+  const msg = s.c===s.total ? "PERFECT! Every key unlocked! 🏆" : s.c>=4 ? "Great job! You're ready! 🌟" : "Nice work finishing! Read the explanations again before test day. 💪";
+  const next = cur<DAYS.length-1 ? `<button class="btn" onclick="openDay(${cur+1})">Go to Day ${cur+2} ➡️</button>` : "";
+  box.innerHTML = `<div class="box done"><div class="big">🔑 ${s.c} / ${s.total}</div><p style="font-size:20px;font-weight:700">${msg}</p>
+    <p>👤 ${escapeHTML(state.name||"(type your name on the first page)")} · Day ${cur+1}: ${DAYS[cur].title}</p>
+    <p>📸 Take a screenshot of this box and turn it in on Canvas.</p>
+    <p><button class="btn light" onclick="goHome()">⬅️ All Days</button> ${next}</p></div>`;
+  if(fresh){ setTimeout(()=>box.scrollIntoView({behavior:"smooth",block:"center"}),300); bigConfetti(); }
+}
+function goHome(){ stopSpeak();
+  document.getElementById("dayview").classList.add("hidden");
+  document.getElementById("teacher").classList.add("hidden");
+  document.getElementById("home").classList.remove("hidden");
+  renderHome(); window.scrollTo(0,0);
+}
+function escapeHTML(s){ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+/* ================= TEACHER ================= */
+function openTeacher(){
+  const code = prompt("Teacher code:");
+  if(!code || code.trim().toLowerCase()!=="locksmith") return;
+  stopSpeak();
+  let h = "";
+  DAYS.forEach((D,d)=>{
+    h += `<h3 style="color:var(--navy);margin:18px 0 4px">Day ${d+1}: ${D.title}</h3><p style="margin:0 0 6px;font-size:14px;color:var(--muted)">${D.skills.map(k=>k[1]).join(" · ")}</p><table><tr><th>#</th><th>Answer</th><th>Why</th></tr>`;
+    D.qs.forEach((q,i)=>{ h += `<tr><td>${i+1}</td><td><b>${"ABCD"[q.a]}</b></td><td>${q.e}</td></tr>`; });
+    h += `</table>`;
+  });
+  document.getElementById("keytable").innerHTML = h;
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("dayview").classList.add("hidden");
+  document.getElementById("teacher").classList.remove("hidden");
+  window.scrollTo(0,0);
+}
+function resetAll(){
+  if(!confirm("Clear ALL saved answers and the name on this iPad?")) return;
+  state = {name:"",ans:{}}; save(); nameEl.value=""; goHome();
+}
+
+/* ================= READ-ALOUD (Google US English) ================= */
+let voice = null;
+function pickVoice(){
+  const vs = speechSynthesis.getVoices();
+  voice = vs.find(v=>v.name==="Google US English") || vs.find(v=>/google/i.test(v.name)&&v.lang==="en-US") || vs.find(v=>v.lang==="en-US") || null;
+}
+if("speechSynthesis" in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function cleanForSpeech(t){ return t.replace(/ELA\.\d+\.[A-Z]+\.\d+(\.\d+)?/g,"").replace(/[—–]/g,", ").replace(/\s+/g," ").trim(); }
+function speak(text){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  // split into sentence-sized chunks (Chrome can stop on long utterances)
+  const parts = cleanForSpeech(text).match(/[^.!?]+[.!?”"]*\s*/g) || [text];
+  parts.forEach(p=>{ const u = new SpeechSynthesisUtterance(p); if(voice) u.voice=voice; u.lang="en-US"; u.rate=0.95; speechSynthesis.speak(u); });
+}
+function stopSpeak(){ try{ speechSynthesis.cancel(); }catch(e){} }
+function speakEl(id){
+  const el = document.getElementById(id).cloneNode(true);
+  el.querySelectorAll("h3,p,div").forEach(n=>n.append(". "));
+  speak(el.textContent);
+}
+function speakFb(i){
+  const t = document.getElementById("fbt"+i).textContent.replace(/[✅❌]/g,"");
+  speak(t);
+}
+function speakQ(i){
+  const q = DAYS[cur].qs[i];
+  const tmp = document.createElement("div"); tmp.innerHTML = q.q;
+  let t = "Question " + (i+1) + ". " + tmp.textContent + " ";
+  q.o.forEach((o,j)=>{ t += " " + "ABCD"[j] + ". " + o + (/[.!?”]$/.test(o)?" ":". "); });
+  speak(t);
+}
+
+/* ================= CONFETTI ================= */
+const cv = document.getElementById("confetti"), cx = cv.getContext("2d");
+let bits = [], running = false;
+function sizeCv(){ cv.width = innerWidth; cv.height = innerHeight; }
+sizeCv(); addEventListener("resize", sizeCv);
+const COLORS = ["#e8505b","#f28c28","#f2b632","#2fb380","#2f8fe0","#8b5cf6"];
+function addBits(x,y,n,spread,power){
+  for(let k=0;k<n;k++){ const a = Math.random()*Math.PI*2, s = Math.random()*power;
+    bits.push({x,y,vx:Math.cos(a)*s*spread,vy:Math.sin(a)*s-power*0.6,r:4+Math.random()*5,c:COLORS[k%6],rot:Math.random()*6,vr:(Math.random()-.5)*.3,life:0}); }
+  if(!running){ running=true; requestAnimationFrame(tick); }
+}
+function tick(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  bits.forEach(b=>{ b.vy+=0.25; b.vx*=0.99; b.x+=b.vx; b.y+=b.vy; b.rot+=b.vr; b.life++;
+    cx.save(); cx.translate(b.x,b.y); cx.rotate(b.rot); cx.fillStyle=b.c; cx.fillRect(-b.r/2,-b.r/4,b.r,b.r/2); cx.restore(); });
+  bits = bits.filter(b=>b.y<cv.height+30 && b.life<400);
+  if(bits.length) requestAnimationFrame(tick); else { running=false; cx.clearRect(0,0,cv.width,cv.height); }
+}
+function miniBurst(el){ const r = el.getBoundingClientRect(); addBits(r.left+r.width/2, r.top+r.height/2, 30, 1, 9); }
+function bigConfetti(){
+  let n=0; const iv = setInterval(()=>{ addBits(Math.random()*innerWidth, innerHeight*0.25, 70, 1.2, 14); if(++n>5) clearInterval(iv); }, 250);
+}
+
+renderHome();
+</script>
+</body>
+</html>
